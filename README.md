@@ -1,34 +1,36 @@
 # 奶龙唐笑字符画 API
 
-## 本地运行
+根据用户提供的奶龙大笑、双手捧肚参考图制作的固定字符画接口。
 
-无需安装 Python 依赖：
+## 公网调用
+
+`GET https://nailong-tangxiao-api.vercel.app/api/nailong`
+
+返回 UTF-8 `text/plain`，内容只包含 `art.txt` 中的字符画，允许跨域读取。
+
+```powershell
+curl.exe https://nailong-tangxiao-api.vercel.app/api/nailong
+```
+
+## 本地运行
 
 ```powershell
 python server.py
 curl.exe http://127.0.0.1:8000/api/nailong
 ```
 
-`GET /api/nailong`（以及 `GET /`）返回固定的 UTF-8 纯文本字符画。`--host` 可指定监听地址，`--port` 或环境变量 `PORT` 可指定端口。接口允许跨域读取。
-
-## 部署成公网 API
-
-此目录可直接作为单独的 Git 仓库。将它推送到 GitHub 后，在 Render 新建 Blueprint，选择该仓库并使用根目录的 `render.yaml`。部署成功后会得到 HTTPS 地址，例如：
-
-```text
-https://<你的服务名>.onrender.com/api/nailong
-```
-
-也可在其他支持 Docker 的平台使用此目录的 `Dockerfile`。容器监听 `0.0.0.0` 和平台提供的 `PORT`。部署完成后，先用浏览器或 `curl` 访问实际地址确认响应。
+无需第三方 Python 依赖。`api/nailong.py` 是 Vercel Python Function 入口；部署时需一并包含 `server.py` 和 `art.txt`。也可使用 Dockerfile 或 render.yaml。
 
 ## 接入 DeepSeek Harness（DSH）
 
-`dsh-plugin/` 是一个 DSH 工具插件，调用上面的公网 API 并向 DSH 提供 `nailong_tangxiao` 工具。先在运行 DSH 的环境中设置完整接口地址，再安装插件：
+在 Windows PowerShell 中，从本仓库根目录运行：
 
 ```powershell
-$env:NAILONG_API_URL = 'https://<你的服务名>.onrender.com/api/nailong'
-dsh plugin --profile web add ./dsh-plugin
+$pluginDir = Join-Path $env:USERPROFILE '.dsh\plugins\nailong-api'
+New-Item -ItemType Directory -Force $pluginDir | Out-Null
+Copy-Item .\dsh-plugin\* $pluginDir -Force
+dsh plugin --profile web add $pluginDir
 dsh --profile web
 ```
 
-如果以其他 profile 运行 DSH，请把两个命令中的 `web` 改成相应名称。设置环境变量后需重启 DSH 进程。然后可以在对话中要求它调用 `nailong_tangxiao`。也可以只使用公网 HTTP API，无须安装插件。
+然后让 DSH 调用 `nailong_tangxiao` 工具。插件默认访问上面的公网接口；网络请求失败时返回包内同一份字符画。可用环境变量 `NAILONG_API_URL` 覆盖地址。
