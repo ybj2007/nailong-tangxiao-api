@@ -11,9 +11,17 @@ curl.exe http://127.0.0.1:8000/api/nailong
 
 `GET /api/nailong`（以及 `GET /`）返回固定的 UTF-8 纯文本字符画。`--host` 可指定监听地址，`--port` 或环境变量 `PORT` 可指定端口。接口允许跨域读取。
 
-## 部署成公网 API
+## 部署成公网 API（Vercel）
 
-此目录可直接作为单独的 Git 仓库。将它推送到 GitHub 后，在 Render 新建 Blueprint，选择该仓库并使用根目录的 `render.yaml`。部署成功后会得到 HTTPS 地址，例如：
+将此目录推送到 GitHub，然后在 Vercel 的 Hobby 方案中导入仓库 `ybj2007/nailong-tangxiao-api`。`api/nailong.py` 是 Vercel Python Function 的入口，部署成功后访问：
+
+```text
+https://<Vercel 分配的域名>/api/nailong
+```
+
+## 其他部署方式
+
+此目录也可使用 Docker 或 Render。Render 新建 Blueprint 时，选择仓库并使用根目录的 `render.yaml`。部署成功后会得到 HTTPS 地址，例如：
 
 ```text
 https://<你的服务名>.onrender.com/api/nailong
