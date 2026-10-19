@@ -3,6 +3,6 @@
   "version": "0.1.0",
   "type": "module",
   "main": "index.js",
-  "files": ["index.js", "cordis.patch.yml"],
+  "files": ["index.js", "cordis.patch.yml", "art.txt"],
   "dsh": { "bundle": { "patch": "./cordis.patch.yml" } }
 }
