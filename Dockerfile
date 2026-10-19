@@ -1,0 +1,8 @@
+FROM python:3.13-slim
+
+WORKDIR /app
+COPY server.py .
+
+ENV PORT=10000
+EXPOSE 10000
+CMD ["python", "server.py", "--host", "0.0.0.0"]
