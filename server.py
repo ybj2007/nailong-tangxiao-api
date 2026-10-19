@@ -3,23 +3,10 @@
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 import argparse
 import os
+from pathlib import Path
 
 
-ART = r"""              __..---..__
-         _.-''  _   _   ''-._
-       .'      (o) (o)      '.
-      /      .-._   _.-.      \
-     |      /  _ `-' _  \      |
-     |      | ( `-._-' ) |      |
-     |      \  `-...-'  /      |
-      \       `-.___.-'       /
-       `-._    /|___|\    _.-'
-         / `--/ |   | \--' \
-       _/   _/  |___|  \_   \_
-     .'___.'   /     \   '.___`.
-              /  ___  \
-             (__(   )__)
-"""
+ART = Path(__file__).with_name("art.txt").read_text(encoding="utf-8")
 
 
 class Handler(BaseHTTPRequestHandler):
